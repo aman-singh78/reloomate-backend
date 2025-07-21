@@ -29,9 +29,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   this.name = this.name
     .split(" ")
-    .map(
-      (word) => word.charAt(0).toUpperCase + word.slice(1).toLocaleUpperCase()
-    )
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
   next();
 });
