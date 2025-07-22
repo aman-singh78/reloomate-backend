@@ -1,8 +1,15 @@
 const express = require("express");
 const profileRoute = express.Router();
-const { registerUser, loginUser } = require("../controllers/user.controller");
+const userAuth = require("../middlewares/userAuth");
+const {
+  registerUser,
+  loginUser,
+  getUserProfile,
+} = require("../controllers/user.controller");
 
-profileRoute.post("/user/register", registerUser);
-profileRoute.post("/user/login", loginUser);
+profileRoute.post("/api/register", registerUser);
+profileRoute.post("/api/login", loginUser);
+
+profileRoute.get("/api/profile", userAuth, getUserProfile);
 
 module.exports = profileRoute;
