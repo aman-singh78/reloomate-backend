@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const validate = require("../utils/validate");
+const validator = require("validator");
 
 const registerUser = async (req, res) => {
   try {
@@ -28,4 +29,29 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = registerUser;
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    const isUserExist = await User.findOne({ email });
+    if (!isUserExist) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordMatched = await isUserExist.validatePassword(password);
+    if (!isPasswordMatched) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = isUserExist.getJwt();
+    res.cookie("token", token);
+    res.status(200).json({ message: "Login successfull" });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" + err.message });
+  }
+};
+
+module.exports = { registerUser, loginUser };

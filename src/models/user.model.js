@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
@@ -45,6 +46,21 @@ userSchema.pre("save", function (next) {
     .join(" ");
   next();
 });
+
+userSchema.methods.validatePassword = async function (inputPassword) {
+  return await bcrypt.compare(inputPassword, this.password);
+};
+
+userSchema.methods.getJwt = function () {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not set in .env");
+  }
+  const user = this;
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+  return token;
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
