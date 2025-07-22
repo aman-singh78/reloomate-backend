@@ -1,7 +1,7 @@
 const validator = require("validator");
 
 const validate = (req) => {
-  const { name, email, password } = req.body;
+  const { name, email, password } = req;
 
   if (!name || !email || !password) {
     throw new Error("All fields (name, email, password) are required");

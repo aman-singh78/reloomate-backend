@@ -1,19 +1,19 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const connectDb = require("./src/config/database");
+const profileRoute = require("./src/routes/profileRouter");
 
 dotenv.config();
 
 const app = express();
 
-const connectDb = require("./src/config/database");
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("✅ RelooMate Backend is running!");
-});
+app.use("/", profileRoute);
 
 connectDb()
   .then(() => {
