@@ -69,4 +69,34 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getUserProfile };
+const getOnboardingContent = (req, res) => {
+  const onboardingSteps = [
+    {
+      title: "Find your ideal roommate",
+      description:
+        "Browse and connect with like-minded students near your campus.",
+      imageUrl: "https://yourcdn.com/images/find-roommate.png",
+    },
+    {
+      title: "Explore verified listings",
+      description:
+        "Get access to trusted PGs, hostels, and apartments in your area.",
+      imageUrl: "https://yourcdn.com/images/explore-listings.png",
+    },
+    {
+      title: "Move in with ease",
+      description:
+        "Make moving simple with RelooMate’s roommate chat and checklist.",
+      imageUrl: "https://yourcdn.com/images/move-in.png",
+    },
+  ];
+
+  res.status(200).json({ steps: onboardingSteps });
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getUserProfile,
+  getOnboardingContent,
+};
