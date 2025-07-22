@@ -38,7 +38,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", function (next) {
   this.name = this.name
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
